@@ -47,17 +47,34 @@ Remote-SSH output channel):
 
 ## Getting the script onto the host
 
-Fetch the script directly from GitHub onto the target box (the script itself is
-tiny and served from `raw.githubusercontent.com`, not the blocked
-`update.code.visualstudio.com`):
+The script is published as a GitHub Gist. Fetch it through the Gists REST API,
+which serves the raw file content as a JSON field rather than as a downloadable
+asset — handy when only `api.github.com` is reachable and `raw.githubusercontent.com`
+is blocked. Grab the gist id (the hash segment in your gist URL,
+`gist.github.com/mstampfer/<GID>`) and pull the file out of the API response
+with `jq`:
 
 ```sh
-curl -fsSLO "https://raw.githubusercontent.com/mstampfer/seed-vscode-server/main/seed-vscode-server.sh"
+GID=<gist_id>   # the hash segment in your gist URL: gist.github.com/mstampfer/<GID>
+
+# with jq:
+curl -fsSL "https://api.github.com/gists/$GID" \
+  | jq -r '.files["seed-vscode-server.sh"].content' > seed-vscode-server.sh
 ```
 
-If the host is fully air-gapped (no egress at all), download the script on a
-machine with internet using the command above and `scp` it over alongside the
-two VS Code tarballs.
+How it works:
+
+- `GET /gists/$GID` returns a JSON document describing the gist; each file lives
+  under `.files`, keyed by filename, with its full text in the `.content` field.
+- `jq -r '.files["seed-vscode-server.sh"].content'` selects that file and prints
+  its raw (`-r`) content, which is redirected into a local
+  `seed-vscode-server.sh`.
+- `curl -fsSL` fails on HTTP errors (`-f`), stays quiet (`-s`), shows real errors
+  (`-S`), and follows redirects (`-L`).
+
+If the host is fully air-gapped (no egress at all), run the command above on a
+machine with internet and `scp` the resulting script over alongside the two
+VS Code tarballs. Remember to `chmod +x seed-vscode-server.sh` before running it.
 
 ## Usage
 
