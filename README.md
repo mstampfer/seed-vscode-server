@@ -45,6 +45,20 @@ Remote-SSH output channel):
    the commit, then `scp` them to the RHEL box.
 2. Run this script **on** the RHEL box, as the user who connects over SSH.
 
+## Getting the script onto the host
+
+Fetch the script directly from GitHub onto the target box (the script itself is
+tiny and served from `raw.githubusercontent.com`, not the blocked
+`update.code.visualstudio.com`):
+
+```sh
+curl -fsSLO "https://raw.githubusercontent.com/mstampfer/seed-vscode-server/main/seed-vscode-server.sh"
+```
+
+If the host is fully air-gapped (no egress at all), download the script on a
+machine with internet using the command above and `scp` it over alongside the
+two VS Code tarballs.
+
 ## Usage
 
 ```sh
