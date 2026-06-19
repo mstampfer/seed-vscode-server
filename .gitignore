@@ -1,0 +1,12 @@
+# VS Code server artifacts (don't commit the downloaded tarballs/binaries)
+*.tgz
+*.tar.gz
+server-linux-x64*
+cli-alpine-x64*
+code-*
+
+# Editor / OS cruft
+.vscode-server/
+.DS_Store
+*.swp
+*~
