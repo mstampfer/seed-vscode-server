@@ -55,7 +55,7 @@ is blocked. Grab the gist id (the hash segment in your gist URL,
 with `jq`:
 
 ```sh
-GID=<gist_id>   # the hash segment in your gist URL: gist.github.com/mstampfer/<GID>
+GID=82f4f39e4c3082bbc9c522b54899151e   # the hash segment in your gist URL: gist.github.com/mstampfer/<GID>
 
 # with jq:
 curl -fsSL "https://api.github.com/gists/$GID" \
